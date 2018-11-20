@@ -1,35 +1,79 @@
-# Middleman + Netlify CMS Starter
+[![](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/netlify/netlifycms)
 
-This repo contains an **[example website](https://middleman-netlify-cms.netlify.com/)** that is built with [Middleman](https://www.middlemanapp.com/) and [Netlify CMS](https://www.netlifycms.org). 
+# Jekyll + Netlify CMS with Netlify Identity
 
-*Designed and developed by [Tom Rutgers](https://www.tomrutgers.nl/)*
+This is the basic Jekyll starter site, with Netlify CMS integrated and using Netlify Identity for
+authentication.
 
-## About the architecture
+## Getting started
 
-**Middleman** is a static site generator using all the shortcuts and tools in modern web development. Check out [middlemanapp.com](http://middlemanapp.com/) for detailed tutorials, including a [getting started guide](http://middlemanapp.com/basics/getting-started/).
+Use our deploy button to get your own copy of the repository:
 
-**Netlify CMS** is a CMS for static site generators. Give non-technical users a simple way to edit and add content to any site built with a static site generator. 
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/jekyll-netlify-cms&stack=cms)
 
-## Getting Started
+This will setup everything needed for running the CMS:
 
-Netlify CMS can run in any frontend web environment, but the quickest way to try it out is by running it on a pre-configured starter site with Netlify. Use the deploy button below to copy the repository to your account.
+* A new repository in your GitHub account with the code
+* Full Continuous Deployment to Netlify's global CDN network
+* Control users and access with Netlify Identity
+* Manage content with Netlify CMS
 
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/tomrutgers/middleman-starter-netlify-cms&amp;stack=cms"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
+The email address associated with your Netlify account will receive an email inviting you as an
+Identity user - click Accept in the email to set your new password, then navigate to `/admin` on
+your site to log in.
 
-After clicking that button, you’ll authenticate with GitHub and choose a repository name. Netlify will then automatically create a repository in your GitHub account with a copy of the files from the template. Next, it will build and deploy the new site on Netlify, bringing you to the site dashboard when the build is complete. To access the CMS, you’ll need to set up [Netlify identity](https://www.netlify.com/docs/identity/) service to authorize users to log in to the CMS. Make sure to enable [Git Gateway](https://www.netlify.com/docs/git-gateway/).
+Now you're all set, and you can start editing content!
 
-### Make it work on your machine
+**Note:** if you switch the repo that was created to private, you'll need to regenerate your token,
+as the token generated using the deploy to Netlify button can only access public repositories. To
+regenerate your token, head to "Settings" in your Netlify site dashboard, go to the "Identity"
+section, then scroll to "Services" where you'll see an "Edit settings" button. Click that and you'll
+see a text link to "Generate access token in GitHub".
 
-Be sure to check out the [middleman installation guide](https://middlemanapp.com/basics/install/) 
+## Local Development
+
+Clone this repository and run:
+
+```bash
+bundle install
+bundle exec jekyll server --watch
 ```
-$ git clone https://github.com//tomrutgers/middleman-starter-netlify-cms
-$ cd middleman-starter-netlify-cms
-$ bundle install
-$ middleman server
+
+Now navigate to [localhost:4000](http://localhost:4000/) to preview the site, and
+[localhost:4000/admin](http://localhost:4000/admin) to log into the CMS.
+
+## Authenticating without Netlify Identity
+
+Netlify provides basic OAuth so you can log in to Netlify CMS with your GitHub profile directly if
+you prefer not to use Netlify Identity. To do so, go to [the GitHub developer application
+screen](https://github.com/settings/developers) and **register new application**. The Authorization
+callback URL you'll need to enter is `https://api.netlify.com/auth/done`. 
+
+Once you've set up the application, go back to your Netlify site dashboard, navigate to the
+**Access** tab. Then fill in your new Client ID and Client Secret in the Github Authentication
+Provider section and check the **Enable GitHub** box.
+
+You'll then need to update the `backend` settings at the top of the `admin/config.yml` file in your
+site repo:
+
+```yaml
+backend:
+  name: github
+  repo: username/repo # your GitHub username and repository name, separated by a slash
+  branch: master # optional, default value is "master"
 ```
 
-### Setting up the CMS
-Follow the [Netlify CMS Quick Start Guide](https://www.netlifycms.org/docs/quick-start/#authentication) to set up authentication, and hosting.
+Now anybody with write access to your GitHub repository can log in at yoursite.netlify.com/admin
+and use the CMS.
 
-### Trouble?
-[![Gitter](https://badges.gitter.im/netlify/netlify.svg)](https://gitter.im/netlify/NetlifyCMS)
+**Enjoy!**
+
+## Bug reports, feature requests, etc
+
+We love feedback, contributions, better documentation, tutorials, general comments,
+random hatemail, rants, love, crazy ideas, etc, etc!
+
+Contact us at [any of netlify's normal channels](https://www.netlify.com/contact) and
+open issues or pull requests for Netlify CMS at [the netlify-cms GitHub
+repo](https://github.com/netlify/netlify-cms). If you need realtime help with setting up Netlify
+CMS, you can reach out in the [Netlify CMS Gitter](https://gitter.im/netlify/netlifycms).
